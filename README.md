@@ -1,59 +1,73 @@
-# ProductosFrontend
+# Productos Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+Frontend Angular para gestionar un catálogo de productos, consumiendo la API REST de productos-api.
 
-## Development server
+## Tecnologías
 
-To start a local development server, run:
+- Angular 21
+- TypeScript
+- Signals (estado reactivo)
+- Reactive Forms
+- HttpClient
+- Bootstrap 5
+
+## Funcionalidades
+
+- Listado de productos activos
+- Buscador por nombre en tiempo real
+- Formulario para crear y editar productos
+- Borrado lógico con confirmación via toast
+- Select de categorías cargado desde la API
+- Badge visual para stock bajo (≤ 5 unidades)
+- Interceptor HTTP para manejo centralizado de errores
+- Environments para configuración por ambiente
+
+## Estructura
+
+```
+src/app/
+├── productos/
+│   ├── components/
+│   ├── interfaces/       → Producto, ProductoRequest
+│   ├── pages/            → productos-page
+│   └── services/         → producto.service
+└── shared/
+    ├── components/       → toast
+    └── interceptors/     → http-error.interceptor
+```
+
+## Cómo ejecutar
+
+### Requisitos
+- Node 22
+- Angular CLI 21
+- productos-api corriendo en `http://localhost:8080`
+
+### Desarrollo local
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La app queda disponible en `http://localhost:4200`
 
-## Code scaffolding
+### Con Docker Compose (recomendado)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Desde la raíz de `productos-api`:
 
 ```bash
-ng generate --help
+docker compose up
 ```
 
-## Building
+Levanta PostgreSQL + Spring Boot con un solo comando.
 
-To build the project run:
+## Variables de entorno
 
-```bash
-ng build
+La URL de la API se configura en `src/environments/environment.ts`:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api'
+};
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

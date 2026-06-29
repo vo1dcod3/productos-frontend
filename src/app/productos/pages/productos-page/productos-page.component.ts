@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ProductoService } from '../../services/producto.service';
 import { Producto, ProductoRequest } from '../../interfaces/producto.interface';
 import { ToastComponent } from '../../../shared/components/toast/toast.component';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-productos-page',
@@ -16,6 +17,7 @@ export class ProductosPageComponent implements OnInit {
   private readonly productoService = inject(ProductoService);
   private readonly fb = inject(FormBuilder);
   private readonly toast = viewChild.required(ToastComponent);
+  private readonly authService = inject(AuthService);
 
   productos = signal<Producto[]>([]);
   cargando = signal(true);
@@ -118,5 +120,9 @@ export class ProductosPageComponent implements OnInit {
       },
       error: () => this.toast().mostrar('Error al eliminar el producto', 'danger')
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

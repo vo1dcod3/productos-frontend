@@ -1,0 +1,51 @@
+<div class="login-container">
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+
+      <h2 class="text-center mb-4">Iniciar Sesión</h2>
+
+      @if (error()) {
+        <div class="alert alert-danger">{{ error() }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="login()">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <input
+            formControlName="email"
+            type="email"
+            class="form-control"
+            placeholder="tu@email.com"
+          />
+          @if (form.get('email')?.invalid && form.get('email')?.touched) {
+            <div class="text-danger small mt-1">Ingresa un email válido</div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Contraseña</label>
+          <input
+            formControlName="password"
+            type="password"
+            class="form-control"
+            placeholder="Tu contraseña"
+          />
+          @if (form.get('password')?.invalid && form.get('password')?.touched) {
+            <div class="text-danger small mt-1">La contraseña es obligatoria</div>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          [disabled]="form.invalid || cargando()">
+          @if (cargando()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
+          Iniciar Sesión
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>

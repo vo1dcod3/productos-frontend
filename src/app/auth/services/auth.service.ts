@@ -44,4 +44,21 @@ export class AuthService {
   estaAutenticado(): boolean {
     return this.getToken() !== null;
   }
+
+  getEmailDesdeToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  getIniciales(): string {
+    const email = this.getEmailDesdeToken();
+    if (!email) return '?';
+    return email[0].toUpperCase();
+  }
 }

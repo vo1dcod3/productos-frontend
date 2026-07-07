@@ -1,0 +1,61 @@
+.avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  color: #fff;
+  font-weight: 700;
+  font-size: .85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.metric-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metric-label {
+  font-size: .78rem;
+  color: #6c757d;
+  margin-top: .2rem;
+}
+
+.badge-categoria {
+  background: #f0f4ff;
+  border: 1px solid #c7d4f7;
+  border-radius: 20px;
+  padding: .3rem .75rem;
+  font-size: .82rem;
+  font-weight: 500;
+  color: #3b5bdb;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  padding: 0 .15rem;
+  cursor: pointer;
+  font-size: .8rem;
+  line-height: 1;
+  opacity: .6;
+  transition: opacity .15s;
+}
+
+.btn-icon:hover {
+  opacity: 1;
+}

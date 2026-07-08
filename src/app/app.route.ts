@@ -1,6 +1,10 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './shared/guards/auth-guard';
 
+/**
+ * Rutas de la aplicación. Las páginas se cargan de forma diferida (lazy) y
+ * la ruta de productos queda protegida por authGuard.
+ */
 export const routes: Routes = [
    {
     path: 'login',

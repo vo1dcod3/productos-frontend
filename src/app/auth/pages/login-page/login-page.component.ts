@@ -9,6 +9,10 @@ import { Router } from '@angular/router';
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css',
 })
+/**
+ * Página de inicio de sesión: valida las credenciales mediante un formulario
+ * reactivo y redirige a productos tras autenticar.
+ */
 export class LoginPageComponent {
 
    private readonly authService = inject(AuthService);
@@ -23,6 +27,7 @@ export class LoginPageComponent {
     password: ['', Validators.required]
   });
 
+  /** Envía las credenciales; navega a productos si el login es correcto o muestra el error. */
   login(): void {
     if (this.form.invalid) return;
 

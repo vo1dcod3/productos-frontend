@@ -17,6 +17,11 @@ Chart.register(...registerables);
   templateUrl: './productos-page.component.html',
   styleUrl: './productos-page.component.css'
 })
+/**
+ * Página principal de gestión: administra el CRUD de productos y categorías,
+ * calcula métricas del catálogo con signals/computed y renderiza un gráfico de
+ * barras (Chart.js) con la distribución de productos por categoría.
+ */
 export class ProductosPageComponent implements OnInit {
 
   private readonly productoService  = inject(ProductoService);
@@ -43,9 +48,11 @@ export class ProductosPageComponent implements OnInit {
 
   // ── Métricas ───────────────────────────────────────────────
   totalProductos        = computed(() => this.productos().length);
+  // Umbral de negocio: se considera "stock bajo" con 5 unidades o menos.
   stockBajoCount        = computed(() => this.productos().filter(p => p.stock <= 5).length);
   categoriasCount       = computed(() => this.categorias().length);
 
+  // Agrupa la cantidad de productos por nombre de categoría; alimenta el gráfico.
   productosPorCategoria = computed(() => {
     const map = new Map<string, number>();
     this.productos().forEach(p =>
@@ -76,11 +83,13 @@ export class ProductosPageComponent implements OnInit {
   });
 
   constructor() {
+    // El effect reacciona a cambios en los signals leídos (productosPorCategoria y
+    // graficoCanvas): cada vez que cambian los datos o aparece el canvas, se re-dibuja el gráfico.
     effect(() => {
       const datos = this.productosPorCategoria();
       if (datos.size === 0) return;
       const canvas = this.graficoCanvas()?.nativeElement;
-      if (!canvas) return;
+      if (!canvas) return; // el canvas aún no está en el DOM; el effect volverá a correr cuando exista.
       this.renderizarGrafico(canvas, datos);
     });
   }
@@ -92,6 +101,8 @@ export class ProductosPageComponent implements OnInit {
 
   // ── Gráfico ────────────────────────────────────────────────
   private renderizarGrafico(canvas: HTMLCanvasElement, datos: Map<string, number>): void {
+    // Chart.js no reutiliza un canvas ya inicializado: hay que destruir la instancia previa
+    // antes de crear una nueva o lanza "Canvas is already in use".
     if (this.chart) { this.chart.destroy(); this.chart = null; }
     this.chart = new Chart(canvas, {
       type: 'bar',
@@ -119,6 +130,7 @@ export class ProductosPageComponent implements OnInit {
   }
 
   // ── Productos CRUD ─────────────────────────────────────────
+  /** Carga la lista de productos desde el backend y actualiza el estado de carga/error. */
   cargarProductos(): void {
     this.cargando.set(true);
     this.productoService.obtenerTodos().subscribe({
@@ -127,6 +139,7 @@ export class ProductosPageComponent implements OnInit {
     });
   }
 
+  /** Abre el formulario en modo editar (si se pasa un producto) o crear (si no). */
   abrirFormulario(producto?: Producto): void {
     if (producto) {
       this.productoEditando.set(producto);
@@ -143,11 +156,13 @@ export class ProductosPageComponent implements OnInit {
     this.form.reset();
   }
 
+  /** Persiste el producto: actualiza si hay uno en edición, o crea uno nuevo. */
   guardar(): void {
     if (this.form.invalid) return;
     const datos: ProductoRequest = this.form.value;
     const editando = this.productoEditando();
 
+    // La presencia de un producto en edición decide entre PUT (actualizar) y POST (crear).
     if (editando) {
       this.productoService.actualizar(editando.id, datos).subscribe({
         next: () => { this.cerrarFormulario(); this.cargarProductos(); this.toast().mostrar('Producto actualizado correctamente', 'success'); },
@@ -161,6 +176,7 @@ export class ProductosPageComponent implements OnInit {
     }
   }
 
+  /** Elimina el producto indicado y recarga la lista. */
   eliminar(id: number): void {
     this.productoService.eliminar(id).subscribe({
       next: () => { this.cargarProductos(); this.toast().mostrar('Producto eliminado correctamente', 'warning'); },
@@ -169,12 +185,14 @@ export class ProductosPageComponent implements OnInit {
   }
 
   // ── Categorías CRUD ────────────────────────────────────────
+  /** Carga la lista de categorías desde el backend. */
   cargarCategorias(): void {
     this.categoriaService.obtenerTodas().subscribe({
       next: (data) => this.categorias.set(data)
     });
   }
 
+  /** Abre el formulario de categoría en modo editar (si se pasa una) o crear (si no). */
   abrirFormCategoria(categoria?: Categoria): void {
     if (categoria) {
       this.categoriaEditando.set(categoria);
@@ -191,11 +209,13 @@ export class ProductosPageComponent implements OnInit {
     this.formCategoria.reset();
   }
 
+  /** Persiste la categoría: actualiza si hay una en edición, o crea una nueva. */
   guardarCategoria(): void {
     if (this.formCategoria.invalid) return;
     const dto: CategoriaRequest = this.formCategoria.value;
     const editando = this.categoriaEditando();
 
+    // Igual que en productos: la categoría en edición decide entre actualizar y crear.
     if (editando) {
       this.categoriaService.actualizar(editando.id, dto).subscribe({
         next: () => { this.cerrarFormCategoria(); this.cargarCategorias(); this.toast().mostrar('Categoría actualizada correctamente', 'success'); },
@@ -209,6 +229,7 @@ export class ProductosPageComponent implements OnInit {
     }
   }
 
+  /** Elimina la categoría indicada y recarga la lista. */
   eliminarCategoria(id: number): void {
     this.categoriaService.eliminar(id).subscribe({
       next: () => { this.cargarCategorias(); this.toast().mostrar('Categoría eliminada correctamente', 'warning'); },
@@ -216,6 +237,7 @@ export class ProductosPageComponent implements OnInit {
     });
   }
 
+  /** Cierra la sesión del usuario. */
   logout(): void {
     this.authService.logout();
   }

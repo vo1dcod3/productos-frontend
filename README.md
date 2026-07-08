@@ -1,5 +1,7 @@
 # Productos Frontend
 
+![CI](https://github.com/vo1dcod3/productos-frontend/actions/workflows/ci.yml/badge.svg)
+
 Aplicación **Angular** para gestionar un catálogo de productos y categorías, con **autenticación JWT** y un dashboard con métricas y gráficos. Consume la API REST de [productos-api](https://github.com/vo1dcod3/productos-api).
 
 ## Tecnologías

@@ -1,1 +1,104 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* ============================================================
+   Autenticación — layout split-screen compartido (login / registro)
+   ============================================================ */
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Panel de marca (izquierda) */
+.auth-brand {
+  flex: 1;
+  background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.auth-brand-content {
+  max-width: 380px;
+}
+
+.auth-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  margin-bottom: 1.75rem;
+}
+
+.auth-brand-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.auth-brand-tagline {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+/* Panel de formulario (derecha) */
+.auth-form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #f8f9fb;
+}
+
+.auth-form-box {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+}
+
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.auth-subtitle {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 1.75rem;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.auth-switch a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* En móvil se oculta el panel de marca y el formulario ocupa todo el ancho */
+@media (max-width: 768px) {
+  .auth-brand {
+    display: none;
+  }
+}

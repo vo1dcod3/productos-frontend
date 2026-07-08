@@ -6,7 +6,7 @@
       <div class="auth-logo">📦</div>
       <h1 class="auth-brand-title">Gestión de Productos</h1>
       <p class="auth-brand-tagline">
-        Administra tu inventario, categorías y stock desde un solo lugar.
+        Crea tu cuenta y empieza a administrar tu inventario en minutos.
       </p>
     </div>
   </aside>
@@ -15,14 +15,14 @@
   <main class="auth-form-panel">
     <div class="auth-form-box">
 
-      <h2 class="auth-title">Iniciar sesión</h2>
-      <p class="auth-subtitle">Ingresa tus credenciales para continuar</p>
+      <h2 class="auth-title">Crear cuenta</h2>
+      <p class="auth-subtitle">Completa tus datos para registrarte</p>
 
       @if (error()) {
         <div class="alert alert-danger">{{ error() }}</div>
       }
 
-      <form [formGroup]="form" (ngSubmit)="login()">
+      <form [formGroup]="form" (ngSubmit)="registrar()">
         <div class="mb-3">
           <label class="form-label fw-semibold">Email</label>
           <input
@@ -36,16 +36,35 @@
           }
         </div>
 
-        <div class="mb-4">
+        <div class="mb-3">
           <label class="form-label fw-semibold">Contraseña</label>
           <input
             formControlName="password"
             type="password"
             class="form-control form-control-lg"
-            placeholder="Tu contraseña"
+            placeholder="Mínimo 6 caracteres"
           />
           @if (form.get('password')?.invalid && form.get('password')?.touched) {
-            <div class="text-danger small mt-1">La contraseña es obligatoria</div>
+            <div class="text-danger small mt-1">
+              @if (form.get('password')?.errors?.['required']) {
+                La contraseña es obligatoria
+              } @else if (form.get('password')?.errors?.['minlength']) {
+                La contraseña debe tener al menos 6 caracteres
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Confirmar contraseña</label>
+          <input
+            formControlName="confirmPassword"
+            type="password"
+            class="form-control form-control-lg"
+            placeholder="Repite la contraseña"
+          />
+          @if (form.get('confirmPassword')?.touched && form.errors?.['passwordsNoCoinciden']) {
+            <div class="text-danger small mt-1">Las contraseñas no coinciden</div>
           }
         </div>
 
@@ -56,13 +75,13 @@
           @if (cargando()) {
             <span class="spinner-border spinner-border-sm me-2"></span>
           }
-          Iniciar sesión
+          Crear cuenta
         </button>
       </form>
 
       <p class="auth-switch">
-        ¿No tienes cuenta?
-        <a routerLink="/register">Crear cuenta</a>
+        ¿Ya tienes cuenta?
+        <a routerLink="/login">Iniciar sesión</a>
       </p>
 
     </div>

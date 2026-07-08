@@ -39,6 +39,15 @@ export class AuthService {
     );
   }
 
+  /** Registra un usuario nuevo; guarda el token para dejarlo autenticado de inmediato. */
+  registro(credenciales: LoginRequest) : Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/registro`, credenciales).pipe(
+      tap(response => {
+        localStorage.setItem(this.TOKEN_KEY, response.token);
+      })
+    );
+  }
+
   /** Elimina el token y redirige al login. */
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
